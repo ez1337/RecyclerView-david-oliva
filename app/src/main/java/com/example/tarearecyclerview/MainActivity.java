@@ -1,6 +1,9 @@
 package com.example.tarearecyclerview;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ContactoAdapter.OnItemClickListener {
+
+    public ArrayList<Contacto> contactArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Set de datos
-        ArrayList<Contacto> contactArrayList = new ArrayList<>(Arrays.asList(new Contacto[]{
+        contactArrayList = new ArrayList<>(Arrays.asList(new Contacto[]{
             new Contacto("Juan Pérez", "juan.perez@example.com", "123456789",R.drawable.juan_perez),
             new Contacto("María López", "maria.lopez@example.com", "987654321",R.drawable.maria_lopez),
             new Contacto("Carlos García", "carlos.garcia@example.com", "456123789",R.drawable.carlos_garcia),
@@ -41,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         }));
 
         //Adaptador
-        ContactoAdapter contactoAdapter = new ContactoAdapter(contactArrayList);
+        ContactoAdapter contactoAdapter = new ContactoAdapter(contactArrayList,this);
 
         //RecyclerView
         RecyclerView rvContactos = findViewById(R.id.contact_list);
@@ -52,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
         //Asignar adaptador a RV
         rvContactos.setAdapter(contactoAdapter);
 
+    }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        // Toast con los datos del contacto pulsado
+        Contacto contacto = contactArrayList.get(position);
+        Toast.makeText(this, contacto.toString(), Toast.LENGTH_SHORT).show();
     }
 }
